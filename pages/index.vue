@@ -2,10 +2,8 @@
   <section class="container">
     <div>
       <h3>Nuxt.js のタグが付けられた投稿の一覧</h3>
-      <!-- <ul>
-        <li 
-        v-for="item in items" 
-        :key="item.id">
+      <ul>
+        <li v-for="item in items" :key="item.id">
           <h4>
             <span>{{ item.title }}</span>
             <small>by {{ item.user.id }}</small>
@@ -15,7 +13,7 @@
             <a :href="item.url">{{ item.url }}</a>
           </p>
         </li>
-      </ul> -->
+      </ul>
     </div>
   </section>
 </template>
@@ -25,18 +23,18 @@ export default {
   components: {
     
   },
-  async mounted() {
-    console.log(
-      JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'), true, ' ')
-    )
-  },
-  // async asyncData({ app }) {
-  //   const items = await app.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js')
+  // async mounted() {
+  //   console.log(
+  //     JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'), true, ' ')
+  //   )
+  // },
+  async asyncData({ app }) {
+    const items = await app.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js')
 
-  //   return {
-  //     items
-  //   }
-  // }
+    return {
+      items
+    }
+  }
 }
 </script>
 
@@ -47,7 +45,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  max-width: 780px;
+  margin: 5rem auto;
 }
 
 .title {
@@ -70,5 +69,35 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+h3 {
+  font-size: 28px;
+  margin: 16px 0;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+h4 {
+  color: #0e1575;
+  border-left: 5px solid currentColor;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 30px;
+}
+li + li {
+  margin: 30px 0;
+}
+
+p {
+  margin: 8px 0;
 }
 </style>
