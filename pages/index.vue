@@ -24,21 +24,24 @@
 </template>
 
 <script>
-export default {
-  components: {
-    
-  },
-  // async mounted() {
-  //   console.log(
-  //     JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'), true, ' ')
-  //   )
-  // },
-  async asyncData({ app }) {
-    const items = await app.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js')
+import { mapGetters } from 'vuex'
+// mapGetters ヘルパーはストアのゲッターをローカルの算出プロパティにマッピングさせます:
 
-    return {
-      items
+export default {
+  async asyncData({ store }) {
+    if ( store.getters['items'].length ) {
+      // もしすでにstoreのitems[]にデータが格納されていれば、
+      // なにもしない（以下の処理はスキップ）
+      return
     }
+    // actionsのfetchItemsを実行 
+    // itemsを非同期で取得してコミット mutationsのsetItems関数を実行
+    // itemsをstoreに保存する
+    await store.dispatch('fetchItems')
+  },
+  computed: {
+    // gettersをスプレッド演算子を用いて、computedに組み込む
+    ...mapGetters(['items'])
   }
 }
 </script>
